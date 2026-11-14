@@ -1,0 +1,74 @@
+{
+    "name": "loan-field",
+    "version": "1.0.0",
+    "kernel": "^1.21.0",
+    "solves": "field.operations",
+    "type": "module",
+    "requires": [
+        "database.management",
+        "sync.offline",
+        "organisation.structure",
+        "loans.management"
+    ],
+    "exposes": [
+        "Plugins\\LoanField\\API\\Contracts\\FieldServiceContract"
+    ],
+    "routePrefix": "/api/field",
+    "routeFilters": [
+        "auth"
+    ],
+    "routes": [
+        {
+            "method": "GET",
+            "path": "/visits",
+            "handler": "Plugins\\LoanField\\Infrastructure\\Http\\Controllers\\VisitController@index",
+            "name": "field.visits.index"
+        },
+        {
+            "method": "POST",
+            "path": "/visits",
+            "handler": "Plugins\\LoanField\\Infrastructure\\Http\\Controllers\\VisitController@store",
+            "name": "field.visits.store",
+            "filters": [
+                "throttle:120,1"
+            ]
+        },
+        {
+            "method": "GET",
+            "path": "/visits/{id:num}",
+            "handler": "Plugins\\LoanField\\Infrastructure\\Http\\Controllers\\VisitController@show",
+            "name": "field.visits.show"
+        },
+        {
+            "method": "GET",
+            "path": "/reminders",
+            "handler": "Plugins\\LoanField\\Infrastructure\\Http\\Controllers\\ReminderController@index",
+            "name": "field.reminders.index"
+        },
+        {
+            "method": "POST",
+            "path": "/reminders",
+            "handler": "Plugins\\LoanField\\Infrastructure\\Http\\Controllers\\ReminderController@store",
+            "name": "field.reminders.store",
+            "filters": [
+                "throttle:120,1"
+            ]
+        },
+        {
+            "method": "GET",
+            "path": "/contacts/not-contacted",
+            "handler": "Plugins\\LoanField\\Infrastructure\\Http\\Controllers\\ContactController@notContacted",
+            "name": "field.contacts.not_contacted"
+        }
+    ],
+    "emits": [],
+    "documentation": "Field operations: a visit an officer made to a customer (GPS optional, photo optional) and a reminder that was attempted by WhatsApp, SMS or a call. This module records those; it does not send messages. Also answers which customers in arrears have had no visit and no reminder in the last N days. Tables live in the tenant template, not here.",
+    "config": [
+        {
+            "key": "BUSINESS_TIMEZONE",
+            "type": "string",
+            "required": false,
+            "default": "Africa/Kampala"
+        }
+    ]
+}
