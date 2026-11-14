@@ -1,6 +1,6 @@
 {
     "name": "loan-field",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "kernel": "^1.21.0",
     "solves": "field.operations",
     "type": "module",
